@@ -1,8 +1,9 @@
 use std::env;
 use clap::{Parser, Subcommand};
 mod project;
-use project::create_project
-
+mod venv;
+use project::create_project;
+use venv::create_venv;
 
 
 #[derive(Parser, Debug)]
@@ -25,6 +26,9 @@ enum Commands {
 	Add {
 		package: String
 	},
+	Venv {
+		path: String
+	},
 }
 
 
@@ -32,8 +36,8 @@ enum Commands {
 fn main() {
 	let cli = Cli::parse();
 	match cli.command {
-	Commands::Create { &name } => {
-            create_project(name);
+	Commands::Create { name } => {
+            create_project(&name);
         }
         Commands::Install => {
             println!("Installing dependencies...");
@@ -43,6 +47,12 @@ fn main() {
             println!("Adding dependency: {}", package);
             // do dependency add logic
         }
+	Commands::Venv { path } => {
+	    match create_venv(&path, "/usr/bin/python3"){
+		Ok(_) => println!("Virtual environment created"),
+        	Err(e) => eprintln!("Error: {}", e),
+		}
 	}				 
 }
 
+}

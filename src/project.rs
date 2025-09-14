@@ -21,7 +21,7 @@ pub fn create_project(name: &str) {
 	"#,
 		name
 	);
-	fs::write(path.join("pyproject.toml"), toml);
+	fs::write(path.join("pyproject.toml"), toml)
 		.expect("Failed to write pyproject.toml");
 	}
 }
