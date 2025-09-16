@@ -8,6 +8,17 @@ pub fn create_venv(path: &str, python_path: &str) -> std::io::Result<()> {
     // 1. Create base folders
     fs::create_dir_all(venv_path.join("bin"))?;
     fs::create_dir_all(venv_path.join("lib"))?;
+    
+    // create activate file
+    let activate = venv_path.join("bin/activate")
+    let mut file = File::create(&target)?;
+    file.write_all(b"#!/bin/bash\n");
+    file.write_all(b"export VIRTUAL_ENV=.venv\n");
+
+    let metadata = fs::metadata(path)?;
+    let mut permissions = metadata.permissions();
+    permissions.set_mode(0o755);
+    fs::set_permissions(path, permissions)?;
 
     // 2. Copy or symlink python executable
     let target = venv_path.join("bin/python");
