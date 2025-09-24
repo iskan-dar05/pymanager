@@ -10,12 +10,12 @@ pub fn create_venv(path: &str, python_path: &str) -> std::io::Result<()> {
     fs::create_dir_all(venv_path.join("lib"))?;
     
     // create activate file
-    let activate = venv_path.join("bin/activate")
-    let mut file = File::create(&target)?;
+    let activate = venv_path.join("bin/activate");
+    let mut file = File::create(&activate)?;
     file.write_all(b"#!/bin/bash\n");
     file.write_all(b"export VIRTUAL_ENV=.venv\n");
 
-    let metadata = fs::metadata(path)?;
+    let metadata = fs::metadata(&activate)?;
     let mut permissions = metadata.permissions();
     permissions.set_mode(0o755);
     fs::set_permissions(path, permissions)?;
